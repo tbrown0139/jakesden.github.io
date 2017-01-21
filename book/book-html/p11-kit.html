@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /><title>p11-kit-0.23.2</title><link rel="stylesheet" href="stylesheets/lfs.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.73.2" /><link rel="stylesheet" href="../stylesheets/lfs-print.css" type="text/css" media="print" /></head><body class="blfs" id="blfs-2017-01-20"><div class="navheader"><h4>Beyond Linux<sup>®</sup> From Scratch - Version 2017-01-20</h4><h3>Chapter 1. Installing packages in dependency build order</h3><ul><li class="prev"><a accesskey="p" href="libtasn1.html" title="libtasn1-4.10">Prev</a><p>libtasn1-4.10</p></li><li class="next"><a accesskey="n" href="gnutls.html" title="GnuTLS-3.5.8">Next</a><p>GnuTLS-3.5.8</p></li><li class="up"><a accesskey="u" href="ch01.html" title="Chapter 1. Installing packages in dependency build order">Up</a></li><li class="home"><a accesskey="h" href="index.html" title="Beyond Linux® From Scratch - Version 2017-01-20">Home</a></li></ul></div><div class="sect1" lang="en" xml:lang="en"><h1 class="sect1"><a id="p11-kit" name="p11-kit"></a>p11-kit-0.23.2</h1><div class="package" lang="en" xml:lang="en"><h2 class="sect2">Introduction to p11-kit</h2><p>
+      The <span class="application">p11-kit</span> package provides a way to load and
+      enumerate PKCS #11 (a Cryptographic Token Interface Standard) modules.
+    </p><p>This package is known to build and work
+                              properly using an LFS-7.10 platform.</p><h3>Package Information</h3><div class="itemizedlist"><ul class="compact"><li><p>
+          Download (HTTP): <a class="ulink" href="http://p11-glue.freedesktop.org/releases/p11-kit-0.23.2.tar.gz">http://p11-glue.freedesktop.org/releases/p11-kit-0.23.2.tar.gz</a>
+        </p></li><li></li><li><p>
+          Download MD5 sum: 738af2442331fc22f440df9bee9b062a
+        </p></li><li><p>
+          Download size: 1000 KB
+        </p></li><li><p>
+          Estimated disk space required: 73 MB (with for tests)
+        </p></li><li><p>
+          Estimated build time: 0.4 SBU (with for tests)
+        </p></li></ul></div><h3>p11-kit Dependencies</h3><h4>Recommended</h4><p class="recommended">
+      <a class="xref" href="cacerts.html" title="Certificate Authority Certificates">Certificate Authority Certificates</a>,
+      <a class="xref" href="libtasn1.html" title="libtasn1-4.10">libtasn1-4.10</a>, and
+      <a class="xref" href="libffi.html" title="libffi-3.2.1">libffi-3.2.1</a>
+    </p><h4>Optional</h4><p class="optional">
+      <a class="xref" href="nss.html" title="NSS-3.28.1">NSS-3.28.1</a>,
+      <a class="xref" href="gtk-doc.html" title="GTK-Doc-1.25">GTK-Doc-1.25</a> and
+      <a class="xref" href="libxslt.html" title="libxslt-1.1.29">libxslt-1.1.29</a>
+    </p><p class="usernotes">User Notes:
+      <a class="ulink" href="http://wiki.linuxfromscratch.org/blfs/wiki/p11-kit">http://wiki.linuxfromscratch.org/blfs/wiki/p11-kit</a>
+    </p></div><div class="installation" lang="en" xml:lang="en"><h2 class="sect2">Installation of p11-kit</h2><p>
+      Install <span class="application">p11-kit</span> by running the following
+      commands:
+    </p><pre class="userinput"><kbd class="command">./configure --prefix=/usr     \
+            --sysconfdir=/etc \
+            --with-trust-paths=/etc/pki/anchors &amp;&amp;
+make</kbd></pre><p>
+      To test the results, issue: <span class="command"><strong>make check</strong></span>.
+    </p><p>
+      Now, as the <code class="systemitem">root</code> user:
+    </p><pre class="root"><kbd class="command">make install</kbd></pre></div><div class="commands" lang="en" xml:lang="en"><h2 class="sect2">Command Explanations</h2><p>
+      <em class="parameter"><code>--with-trust-paths=/etc/pki/anchors</code></em>: this switch
+      sets the location of trusted certificates used by libp11-kit.so.
+    </p><p>
+      <code class="option">--with-hash-impl=freebl</code>: Use this switch if you want to
+      use the Freebl library from <span class="application">NSS</span> for SHA1 and
+      MD5 hashing.
+    </p><p>
+      <code class="option">--enable-doc</code>: Use this switch if you have installed
+      <a class="xref" href="gtk-doc.html" title="GTK-Doc-1.25">GTK-Doc-1.25</a> and <a class="xref" href="libxslt.html" title="libxslt-1.1.29">libxslt-1.1.29</a> and wish to
+      rebuild the documentation and generate manual pages.
+    </p></div><div class="configuration" lang="en" xml:lang="en"><h2 class="sect2">Configuring p11-kit</h2><p>If <a class="xref" href="nss.html" title="NSS-3.28.1">NSS-3.28.1</a> is installed,
+    <code class="filename">/usr/lib/libp11-kit.so</code> can be used as a drop-in
+    replacement for <code class="filename">/usr/lib/libnssckbi.so</code> to
+    transparently make the system CAs available to
+    <span class="application">NSS</span> aware applications, rather than the static
+    list provided by <code class="filename">/usr/lib/libnssckbi.so</code>. As the
+    <code class="systemitem">root</code> user, execute the following
+    commands:</p><pre class="root"><kbd class="command">readlink /usr/lib/libnssckbi.so || \
+mv -v /usr/lib/libnssckbi.so /usr/lib/libnssckbi.so.orig &amp;&amp;
+ln -sfv libp11-kit.so /usr/lib/libnssckbi.so</kbd></pre></div><div class="content" lang="en" xml:lang="en"><h2 class="sect2">Contents</h2><div class="segmentedlist"><div class="seglistitem"><div class="seg"><strong class="segtitle">Installed Program: </strong><span class="segbody">
+          p11-kit and trust
+        </span></div><div class="seg"><strong class="segtitle">Installed Libraries: </strong><span class="segbody">
+          libp11-kit.so and p11-kit-proxy.so
+        </span></div><div class="seg"><strong class="segtitle">Installed Directories: </strong><span class="segbody">
+          /etc/pkcs11,
+          /usr/include/p11-kit-1,
+          /usr/lib/{p11-kit,pkcs11},
+          /usr/share/gtk-doc/html/p11-kit, and
+          /usr/share/p11-kit
+        </span></div></div></div><div class="variablelist"><h3>Short Descriptions</h3><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><a id="p11-kit-prog"></a><span class="term"><span class="command"><strong>p11-kit</strong></span></span></p></td><td><p>
+            is a command line tool that can be used to perform operations
+             on PKCS#11 modules configured on the system.
+          </p></td></tr><tr><td><p><a id="trust"></a><span class="term"><span class="command"><strong>trust</strong></span></span></p></td><td><p>
+            is a command line tool to examine and modify the shared trust
+            policy store.
+          </p></td></tr><tr><td><p><a id="libp11-kit"></a><span class="term"><code class="filename">libp11-kit.so</code></span></p></td><td><p>
+            contains functions used to coordinate initialization and
+            finalization of any PKCS#11 module.
+          </p></td></tr><tr><td><p><a id="p11-kit-proxy"></a><span class="term"><code class="filename">p11-kit-proxy.so</code></span></p></td><td><p>
+            is the PKCS#11 proxy module.
+          </p></td></tr></tbody></table></div></div><p class="updated">Last updated 
+      on
+       2016-11-18 07:13:46 +0000</p></div><div class="navfooter"><ul><li class="prev"><a accesskey="p" href="libtasn1.html" title="libtasn1-4.10">Prev</a><p>libtasn1-4.10</p></li><li class="next"><a accesskey="n" href="gnutls.html" title="GnuTLS-3.5.8">Next</a><p>GnuTLS-3.5.8</p></li><li class="up"><a accesskey="u" href="ch01.html" title="Chapter 1. Installing packages in dependency build order">Up</a></li><li class="home"><a accesskey="h" href="index.html" title="Beyond Linux® From Scratch - Version 2017-01-20">Home</a></li></ul></div></body></html>

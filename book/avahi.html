@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /><title>Avahi-0.6.32</title><link rel="stylesheet" href="stylesheets/lfs.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.73.2" /><link rel="stylesheet" href="../stylesheets/lfs-print.css" type="text/css" media="print" /></head><body class="blfs" id="blfs-2017-01-20"><div class="navheader"><h4>Beyond Linux<sup>®</sup> From Scratch - Version 2017-01-20</h4><h3>Chapter 1. Installing packages in dependency build order</h3><ul><li class="prev"><a accesskey="p" href="libdaemon.html" title="libdaemon-0.14">Prev</a><p>libdaemon-0.14</p></li><li class="next"><a accesskey="n" href="geoclue2.html" title="GeoClue-2.4.4">Next</a><p>GeoClue-2.4.4</p></li><li class="up"><a accesskey="u" href="ch01.html" title="Chapter 1. Installing packages in dependency build order">Up</a></li><li class="home"><a accesskey="h" href="index.html" title="Beyond Linux® From Scratch - Version 2017-01-20">Home</a></li></ul></div><div class="sect1" lang="en" xml:lang="en"><h1 class="sect1"><a id="avahi" name="avahi"></a>Avahi-0.6.32</h1><div class="package" lang="en" xml:lang="en"><h2 class="sect2">Introduction to Avahi</h2><p>
+      The <span class="application">Avahi</span> package is a system which
+      facilitates service discovery on a local network.
+    </p><p>This package is known to build and work
+                              properly using an LFS-7.10 platform.</p><h3>Package Information</h3><div class="itemizedlist"><ul class="compact"><li><p>
+          Download (HTTP): <a class="ulink" href="https://github.com/lathiat/avahi/releases/download/v0.6.32/avahi-0.6.32.tar.gz">https://github.com/lathiat/avahi/releases/download/v0.6.32/avahi-0.6.32.tar.gz</a>
+        </p></li><li></li><li><p>
+          Download MD5 sum: 22b5e705d3eabb31d26f2e1e7b074013
+        </p></li><li><p>
+          Download size: 1.2 MB
+        </p></li><li><p>
+          Estimated disk space required: 23 MB
+        </p></li><li><p>
+          Estimated build time: 0.3 SBU
+        </p></li></ul></div><h3>Avahi Dependencies</h3><h4>Required</h4><p class="required">
+      <a class="xref" href="glib2.html" title="GLib-2.50.2">GLib-2.50.2</a>
+    </p><h4>Recommended</h4><p class="recommended">
+      <a class="xref" href="gobject-introspection.html" title="gobject-introspection-1.50.0">gobject-introspection-1.50.0</a>,
+      <a class="xref" href="gtk2.html" title="GTK+-2.24.31">GTK+-2.24.31</a>,
+      <a class="xref" href="gtk3.html" title="GTK+-3.22.7">GTK+-3.22.7</a>,
+      <a class="xref" href="libdaemon.html" title="libdaemon-0.14">libdaemon-0.14</a> and
+      <a class="xref" href="libglade.html" title="libglade-2.6.4">libglade-2.6.4</a>
+    </p><h4>Optional</h4><p class="optional">
+      <a class="xref" href="dbus-python.html" title="D-Bus Python">D-Bus Python-1.2.4</a> and
+      <a class="xref" href="pygtk.html" title="PyGTK-2.24.0">PyGTK-2.24.0</a> 
+    </p><p class="usernotes">User Notes:
+      <a class="ulink" href="http://wiki.linuxfromscratch.org/blfs/wiki/avahi">http://wiki.linuxfromscratch.org/blfs/wiki/avahi</a>
+    </p></div><div class="installation" lang="en" xml:lang="en"><h2 class="sect2">Installation of Avahi</h2><p>
+      There should be a dedicated user and group to take control
+      of the <span class="command"><strong>avahi-daemon</strong></span> daemon after it is
+      started. Issue the following commands as the
+      <code class="systemitem">root</code> user:
+    </p><pre class="root"><kbd class="command">groupadd -fg 84 avahi &amp;&amp;
+useradd -c "Avahi Daemon Owner" -d /var/run/avahi-daemon -u 84 \
+        -g avahi -s /bin/false avahi</kbd></pre><p>
+      There should also be a dedicated priviliged access group for
+      <span class="application">Avahi</span> clients. Issue the following command as
+      the <code class="systemitem">root</code> user:
+    </p><pre class="root"><kbd class="command">groupadd -fg 86 netdev</kbd></pre><p>Install <span class="application">Avahi</span> by running the following
+    commands:</p><pre class="userinput"><kbd class="command">./configure --prefix=/usr        \
+            --sysconfdir=/etc    \
+            --localstatedir=/var \
+            --disable-static     \
+            --disable-mono       \
+            --disable-monodoc    \
+            --disable-python     \
+            --disable-qt3        \
+            --disable-qt4        \
+            --enable-core-docs   \
+            --with-distro=none   \
+            --with-systemdsystemunitdir=no &amp;&amp;
+make</kbd></pre><p>
+      This package does not come with a test suite.
+    </p><p>Now, as the <code class="systemitem">root</code> user:</p><pre class="root"><kbd class="command">make install</kbd></pre></div><div class="commands" lang="en" xml:lang="en"><h2 class="sect2">Command Explanations</h2><p>
+      <em class="parameter"><code>--disable-static</code></em>: This switch prevents
+      installation of static versions of the libraries.
+    </p><p>
+      <em class="parameter"><code>--disable-mono</code></em>: This parameter disables the
+      <span class="application">Mono</span> bindings.
+    </p><p>
+      <em class="parameter"><code>--disable-monodoc</code></em>: This parameter disables
+      documentation for the <span class="application">Mono</span> bindings.
+    </p><p>
+      <em class="parameter"><code>--disable-python</code></em>: This parameter disables the
+      scripts that depend on <span class="application">Python</span>. It also
+      allows a regular install to complete successfully.
+    </p><p>
+      <em class="parameter"><code>--disable-qt3</code></em>: This parameter disables the
+      attempt to build the obsolete <span class="application">Qt3</span> 
+      portions of the package.
+    </p><p>
+      <em class="parameter"><code>--disable-qt4</code></em>: This parameter disables the
+      attempt to build the obsolete <span class="application">Qt4Core</span> 
+      portions of the package.
+    </p><p>
+      <em class="parameter"><code>--enable-core-docs</code></em>: This parameter enables the
+      building of documentation.
+    </p><p>
+      <em class="parameter"><code>--with-distro=none</code></em>: There is an obsolete
+      boot script in the distribution for LFS. This option disables it.
+    </p><p>
+      <em class="parameter"><code>--with-systemdsystemunitdir=no</code></em>: Without it, the
+      daemon fails to start in BLFS, which does not support
+      <span class="application">systemd</span>.
+    </p><p>
+      <code class="option">--disable-dbus</code>: This parameter disables the use
+      of <span class="application">D-Bus</span>.
+    </p><p>
+      <code class="option">--disable-gtk</code>: This parameter disables the use
+      of <span class="application">GTK+2</span>.
+    </p><p>
+      <code class="option">--disable-gtk3</code>: This parameter disables the use
+      of <span class="application">GTK+3</span>.
+    </p><p>
+      <code class="option">--disable-libdaemon</code>: This parameter disables the use
+      of <span class="application">libdaemon</span>. If you use this option,
+      <span class="command"><strong>avahi-daemon</strong></span> won't be built.
+    </p><p>
+      <code class="option">--enable-tests</code>: This option enables the building of
+      tests and examples.
+    </p><p>
+      <code class="option">--enable-compat-howl</code>: This option enables the
+      compatibility layer for <span class="application">HOWL</span>.
+    </p><p>
+      <code class="option">--enable-compat-libdns_sd</code>: This option enables the
+      compatibility layer for <span class="application">libdns_sd</span>.
+    </p></div><div class="configuration" lang="en" xml:lang="en"><h2 class="sect2">Configuring avahi</h2><div class="sect3" lang="en" xml:lang="en"><h3 class="sect3"><a id="avahi-init" name="avahi-init"></a>Boot Script</h3><p>
+        To automatically start the <span class="command"><strong>avahi-daemon</strong></span>
+        when the system is rebooted, install the
+        <code class="filename">/etc/rc.d/init.d/avahi</code> bootscript from
+        the <a class="xref" href="bootscripts.html" title="BLFS Boot Scripts">blfs-bootscripts-20160902</a> package.
+      </p><pre class="root"><kbd class="command">make install-avahi</kbd></pre></div></div><div class="content" lang="en" xml:lang="en"><h2 class="sect2">Contents</h2><div class="segmentedlist"><div class="seglistitem"><div class="seg"><strong class="segtitle">Installed Programs: </strong><span class="segbody">avahi-autoipd, avahi-bookmarks, avahi-browse, avahi-browse-domains,
+        avahi-daemon, avahi-discover, avahi-discover-standalone, avahi-dnsconfd,
+        avahi-publish, avahi-publish-address, avahi-publish-service,
+        avahi-resolve, avahi-resolve-address, avahi-resolve-host-name,
+        avahi-set-host-name, bshell, bssh, and bvnc</span></div><div class="seg"><strong class="segtitle">Installed Libraries: </strong><span class="segbody">libavahi-client.so, libavahi-common.so,
+        libavahi-core.so, libavahi-glib.so, libavahi-gobject.so,
+        libavahi-ui-gtk3.so,, libavahi-ui.so, libdns_sd.so, and
+        libhowl.so,</span></div><div class="seg"><strong class="segtitle">Installed Directories: </strong><span class="segbody">/etc/avahi/services, /usr/{include/{avahi-client,avahi-common,
+        avahi-compat-howl/{corby,discovery,rendezvous,salt},
+        avahi-compat-libdns_sd,avahi-core,avahi-glib,avahi-gobject,avahi-ui},
+        lib/{avahi,python2.7/site-packages/{avahi,
+        avahi_discover}},share/{avahi/interfaces,locale/en_NZ/LC_MESSAGES}}</span></div></div></div><div class="variablelist"><h3>Short Descriptions</h3><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><a id="avahi-autoipd"></a><span class="term"><span class="command"><strong>avahi-autoipd</strong></span></span></p></td><td><p>is a IPv4LL network address configuration daemon.</p></td></tr><tr><td><p><a id="avahi-bookmarks"></a><span class="term"><span class="command"><strong>avahi-bookmarks</strong></span></span></p></td><td><p>is a Web service showing mDNS/DNS-SD announced HTTP services
+          using the <span class="application">Avahi</span> daemon.</p></td></tr><tr><td><p><a id="avahi-browse"></a><span class="term"><span class="command"><strong>avahi-browse</strong></span></span></p></td><td><p>browses for mDNS/DNS-SD services using the
+          <span class="application">Avahi</span> daemon.</p></td></tr><tr><td><p><a id="avahi-browse-domains"></a><span class="term"><span class="command"><strong>avahi-browse-domains</strong></span></span></p></td><td><p>browses for mDNS/DNS-SD services using the
+          <span class="application">Avahi</span> daemon.</p></td></tr><tr><td><p><a id="avahi-daemon"></a><span class="term"><span class="command"><strong>avahi-daemon</strong></span></span></p></td><td><p>is the <span class="application">Avahi</span> mDNS/DNS-SD
+          daemon.</p></td></tr><tr><td><p><a id="avahi-discover"></a><span class="term"><span class="command"><strong>avahi-discover</strong></span></span></p></td><td><p>browses for mDNS/DNS-SD services using the
+          <span class="application">Avahi</span> daemon.</p></td></tr><tr><td><p><a id="avahi-discover-standalone"></a><span class="term"><span class="command"><strong>avahi-discover-standalone</strong></span></span></p></td><td><p>browses for mDNS/DNS-SD services using the
+          <span class="application">Avahi</span> daemon.</p></td></tr><tr><td><p><a id="avahi-dnsconfd"></a><span class="term"><span class="command"><strong>avahi-dnsconfd</strong></span></span></p></td><td><p>is a Unicast DNS server from mDNS/DNS-SD configuration
+          daemon.</p></td></tr><tr><td><p><a id="avahi-publish"></a><span class="term"><span class="command"><strong>avahi-publish</strong></span></span></p></td><td><p>registers a mDNS/DNS-SD service or host name or address mapping
+          using the <span class="application">Avahi</span> daemon.</p></td></tr><tr><td><p><a id="avahi-publish-address"></a><span class="term"><span class="command"><strong>avahi-publish-address</strong></span></span></p></td><td><p>registers a mDNS/DNS-SD service or host name or address mapping
+          using the <span class="application">Avahi</span> daemon.</p></td></tr><tr><td><p><a id="avahi-publish-service"></a><span class="term"><span class="command"><strong>avahi-publish-service</strong></span></span></p></td><td><p>registers a mDNS/DNS-SD service or host name or address mapping
+          using the <span class="application">Avahi</span> daemon.</p></td></tr><tr><td><p><a id="avahi-resolve"></a><span class="term"><span class="command"><strong>avahi-resolve</strong></span></span></p></td><td><p>resolves one or more mDNS/DNS host name(s) to IP address(es)
+          (and vice versa) using the <span class="application">Avahi</span>
+          daemon.</p></td></tr><tr><td><p><a id="avahi-resolve-address"></a><span class="term"><span class="command"><strong>avahi-resolve-address</strong></span></span></p></td><td><p>resolves one or more mDNS/DNS host name(s) to IP address(es)
+          (and vice versa) using the <span class="application">Avahi</span>
+          daemon.</p></td></tr><tr><td><p><a id="avahi-resolve-host-name"></a><span class="term"><span class="command"><strong>avahi-resolve-host-name</strong></span></span></p></td><td><p>resolves one or more mDNS/DNS host name(s) to IP address(es)
+          (and vice versa) using the <span class="application">Avahi</span>
+          daemon.</p></td></tr><tr><td><p><a id="avahi-set-host-name"></a><span class="term"><span class="command"><strong>avahi-set-host-name</strong></span></span></p></td><td><p>changes the mDNS host name.</p></td></tr><tr><td><p><a id="bssh"></a><span class="term"><span class="command"><strong>bssh</strong></span></span></p></td><td><p>browses for SSH servers on the local network.</p></td></tr><tr><td><p><a id="bvnc"></a><span class="term"><span class="command"><strong>bvnc</strong></span></span></p></td><td><p>browses for VNC servers on the local network.</p></td></tr></tbody></table></div></div><p class="updated">Last updated 
+      on
+       2016-08-30 03:28:42 +0000</p></div><div class="navfooter"><ul><li class="prev"><a accesskey="p" href="libdaemon.html" title="libdaemon-0.14">Prev</a><p>libdaemon-0.14</p></li><li class="next"><a accesskey="n" href="geoclue2.html" title="GeoClue-2.4.4">Next</a><p>GeoClue-2.4.4</p></li><li class="up"><a accesskey="u" href="ch01.html" title="Chapter 1. Installing packages in dependency build order">Up</a></li><li class="home"><a accesskey="h" href="index.html" title="Beyond Linux® From Scratch - Version 2017-01-20">Home</a></li></ul></div></body></html>

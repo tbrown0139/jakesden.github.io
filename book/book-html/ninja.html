@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /><title>Ninja-1.7.2</title><link rel="stylesheet" href="stylesheets/lfs.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.73.2" /><link rel="stylesheet" href="../stylesheets/lfs-print.css" type="text/css" media="print" /></head><body class="blfs" id="blfs-2017-01-20"><div class="navheader"><h4>Beyond Linux<sup>®</sup> From Scratch - Version 2017-01-20</h4><h3>Chapter 1. Installing packages in dependency build order</h3><ul><li class="prev"><a accesskey="p" href="perl-file-basedir.html" title="File::BaseDir-0.07">Prev</a><p>File::BaseDir-0.07</p></li><li class="next"><a accesskey="n" href="flac.html" title="FLAC-1.3.2">Next</a><p>FLAC-1.3.2</p></li><li class="up"><a accesskey="u" href="ch01.html" title="Chapter 1. Installing packages in dependency build order">Up</a></li><li class="home"><a accesskey="h" href="index.html" title="Beyond Linux® From Scratch - Version 2017-01-20">Home</a></li></ul></div><div class="sect1" lang="en" xml:lang="en"><h1 class="sect1"><a id="ninja" name="ninja"></a>Ninja-1.7.2</h1><div class="package" lang="en" xml:lang="en"><h2 class="sect2">Introduction to Ninja</h2><p>
+      <span class="application">Ninja</span> is a small build system with a focus on
+      speed.
+    </p><p>This package is known to build and work
+                              properly using an LFS-7.10 platform.</p><div class="admon note"><img alt="[Note]" src="images/note.png" /><h3>Note</h3><p>Download this file via wget as:</p><pre class="userinput"><kbd class="command">wget https://github.com/ninja-build/ninja/archive/v1.7.2.tar.gz \
+     -O ninja-1.7.2.tar.gz</kbd></pre></div><h3>Package Information</h3><div class="itemizedlist"><ul class="compact"><li><p>
+          Download (HTTP): <a class="ulink" href="https://github.com/ninja-build/ninja/archive/v1.7.2.tar.gz">https://github.com/ninja-build/ninja/archive/v1.7.2.tar.gz</a>
+        </p></li><li><p>
+          Download MD5 sum: 7b482218757acbaeac4d4d54a3cd94e1
+        </p></li><li><p>
+          Download size: 176 KB
+        </p></li><li><p>
+          Estimated disk space required: 58.0 MB
+        </p></li><li><p>
+          Estimated build time: 0.2 SBU
+        </p></li></ul></div><h3>Ninja Dependencies</h3><h4>Required</h4><p class="required">
+      <a class="xref" href="python2.html" title="Python-2.7.13">Python-2.7.13</a>
+    </p><h4>Optional</h4><p class="optional">
+      <a class="ulink" href="http://re2c.sourceforge.net/">re2c</a>
+      (only needed to modify the build), emacs (in full book)
+               (to generate
+      lisp files), <a class="xref" href="asciidoc.html" title="Asciidoc-8.6.9">asciidoc-8.6.9</a> (to build the manual), and
+      <a class="xref" href="doxygen.html" title="Doxygen-1.8.13">Doxygen-1.8.13</a> (to build API documenatation)
+    </p><p class="usernotes">User Notes:
+      <a class="ulink" href="http://wiki.linuxfromscratch.org/blfs/wiki/ninja">http://wiki.linuxfromscratch.org/blfs/wiki/ninja</a>
+    </p></div><div class="installation" lang="en" xml:lang="en"><h2 class="sect2">Installation of Ninja</h2><p>
+      Install <span class="application">Ninja</span> by running the following
+      commands:
+    </p><pre class="userinput"><kbd class="command">./configure.py --bootstrap</kbd></pre><p>If Emacs is installed and you wish to build lisp files:</p><pre class="userinput"><kbd class="command">emacs -Q --batch -f batch-byte-compile misc/ninja-mode.el</kbd></pre><p>
+      To test the results, issue the following commands:
+    </p><pre class="userinput"><kbd class="command">./configure.py &amp;&amp;
+./ninja ninja_test &amp;&amp;
+./ninja_test --gtest_filter=-SubprocessTest.SetWithLots</kbd></pre><p>
+      Now, as the <code class="systemitem">root</code> user:
+    </p><pre class="root"><kbd class="command">install -vm755 ninja /usr/bin/ &amp;&amp;
+install -vDm644 misc/ninja.vim \
+                /usr/share/vim/vim74/syntax/ninja.vim &amp;&amp;
+install -vDm644 misc/bash-completion \
+                /usr/share/bash-completion/completions/ninja &amp;&amp;
+install -vDm644 misc/zsh-completion \
+                /usr/share/zsh/site-functions/_ninja
+</kbd></pre><p>
+      If Emacs is installed, while still the
+      <code class="systemitem">root</code> user:
+    </p><pre class="root"><kbd class="command">install -vDm644 misc/ninja-mode.el \
+                /usr/share/emacs/site-lisp/ninja-mode.el
+install -vDm644 misc/ninja-mode.elc \
+                /usr/share/emacs/site-lisp/ninja-mode.elc</kbd></pre><p>
+      If you have <a class="xref" href="asciidoc.html" title="Asciidoc-8.6.9">asciidoc-8.6.9</a> installed and wish to build the
+      HTML manual, execute the following commands (as the
+      <code class="systemitem">root</code> user):
+    </p><pre class="root"><kbd class="command">ninja manual &amp;&amp;
+install -vDm644 doc/manual.html /usr/share/doc/ninja-1.7.2/manual.html</kbd></pre><p>
+      If you have <a class="xref" href="doxygen.html" title="Doxygen-1.8.13">Doxygen-1.8.13</a> installed and wish to build the
+      API documentation, execute the following commands (as the
+      <code class="systemitem">root</code> user):
+    </p><pre class="root"><kbd class="command">ninja doxygen &amp;&amp;
+install -vDm644 doc/doxygen/html/* /usr/share/doc/ninja-1.7.2/</kbd></pre></div><div class="commands" lang="en" xml:lang="en"><h2 class="sect2">Command Explanations</h2><p>
+      <span class="command"><strong>emacs -Q --batch -f batch-byte-compile
+      misc/ninja-mode.el</strong></span>: regenerates the emacs lisp files.
+    </p></div><div class="content" lang="en" xml:lang="en"><h2 class="sect2">Contents</h2><div class="segmentedlist"><div class="seglistitem"><div class="seg"><strong class="segtitle">Installed Programs: </strong><span class="segbody">
+          ninja
+        </span></div><div class="seg"><strong class="segtitle">Installed Library: </strong><span class="segbody">
+          none
+        </span></div><div class="seg"><strong class="segtitle">Installed Directories: </strong><span class="segbody">
+          /usr/share/doc/ninja-1.7.2
+        </span></div></div></div><div class="variablelist"><h3>Short Descriptions</h3><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><a id="ninja-prog"></a><span class="term"><span class="command"><strong>ninja</strong></span></span></p></td><td><p>
+            is the Ninja build system.
+          </p></td></tr></tbody></table></div></div><p class="updated">Last updated 
+      on
+       2016-11-18 04:53:13 +0000</p></div><div class="navfooter"><ul><li class="prev"><a accesskey="p" href="perl-file-basedir.html" title="File::BaseDir-0.07">Prev</a><p>File::BaseDir-0.07</p></li><li class="next"><a accesskey="n" href="flac.html" title="FLAC-1.3.2">Next</a><p>FLAC-1.3.2</p></li><li class="up"><a accesskey="u" href="ch01.html" title="Chapter 1. Installing packages in dependency build order">Up</a></li><li class="home"><a accesskey="h" href="index.html" title="Beyond Linux® From Scratch - Version 2017-01-20">Home</a></li></ul></div></body></html>

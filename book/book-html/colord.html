@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /><title>Colord-1.2.12</title><link rel="stylesheet" href="stylesheets/lfs.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.73.2" /><link rel="stylesheet" href="../stylesheets/lfs-print.css" type="text/css" media="print" /></head><body class="blfs" id="blfs-2017-01-20"><div class="navheader"><h4>Beyond Linux<sup>®</sup> From Scratch - Version 2017-01-20</h4><h3>Chapter 1. Installing packages in dependency build order</h3><ul><li class="prev"><a accesskey="p" href="polkit.html" title="Polkit-0.113">Prev</a><p>Polkit-0.113</p></li><li class="next"><a accesskey="n" href="cups.html" title="Cups-2.2.1">Next</a><p>Cups-2.2.1</p></li><li class="up"><a accesskey="u" href="ch01.html" title="Chapter 1. Installing packages in dependency build order">Up</a></li><li class="home"><a accesskey="h" href="index.html" title="Beyond Linux® From Scratch - Version 2017-01-20">Home</a></li></ul></div><div class="sect1" lang="en" xml:lang="en"><h1 class="sect1"><a id="colord" name="colord"></a>Colord-1.2.12</h1><div class="package" lang="en" xml:lang="en"><h2 class="sect2">Introduction to Colord</h2><p>
+      <span class="application">Colord</span> is a system activated daemon that
+      maps devices to color profiles. It is used by
+      <span class="application">GNOME Color Manager</span> for system integration
+      and use when there are no users logged in.
+    </p><p>This package is known to build and work
+                              properly using an LFS-7.10 platform.</p><h3>Package Information</h3><div class="itemizedlist"><ul class="compact"><li><p>
+          Download (HTTP): <a class="ulink" href="http://www.freedesktop.org/software/colord/releases/colord-1.2.12.tar.xz">http://www.freedesktop.org/software/colord/releases/colord-1.2.12.tar.xz</a>
+        </p></li><li></li><li><p>
+          Download MD5 sum: 80b106ba18a43c7eeaf2d9a2b8c5725b
+        </p></li><li><p>
+          Download size: 1.2 MB
+        </p></li><li><p>
+          Estimated disk space required: 37 MB (without tests)
+        </p></li><li><p>
+          Estimated build time: 0.4 SBU (without tests)
+        </p></li></ul></div><h3>Colord Dependencies</h3><h4>Required</h4><p class="required">
+      <a class="xref" href="dbus.html" title="dbus-1.10.14">dbus-1.10.14</a>,
+      <a class="xref" href="glib2.html" title="GLib-2.50.2">GLib-2.50.2</a>,
+      <a class="xref" href="lcms2.html" title="Little CMS-2.8">Little CMS-2.8</a>, and
+      <a class="xref" href="sqlite.html" title="SQLite-3.16.2">SQLite-3.16.2</a>
+    </p><h4>Required (for the tests)</h4><p class="required">
+      <a class="xref" href="valgrind.html" title="Valgrind-3.12.0">Valgrind-3.12.0</a>
+    </p><h4>Recommended</h4><p class="recommended">
+      <a class="xref" href="gobject-introspection.html" title="gobject-introspection-1.50.0">gobject-introspection-1.50.0</a>,
+      <a class="xref" href="libgudev.html" title="libgudev-230">libgudev-230</a>,
+      <a class="xref" href="libgusb.html" title="libgusb-0.2.9">libgusb-0.2.9</a>,
+      <a class="xref" href="polkit.html" title="Polkit-0.113">Polkit-0.113</a>,<span> and</span>
+      
+      <a class="xref" href="vala.html" title="Vala-0.34.4">Vala-0.34.4</a>
+    </p><h4>Optional</h4><p class="optional">
+      <a class="xref" href="docbook-utils.html" title="DocBook-utils-0.6.14">DocBook-utils-0.6.14</a>,
+      gnome-desktop (in full book)
+               and
+      colord-gtk (in full book)
+               (to build the example tools),
+      <a class="xref" href="gtk-doc.html" title="GTK-Doc-1.25">GTK-Doc-1.25</a>,
+      <a class="xref" href="libxslt.html" title="libxslt-1.1.29">libxslt-1.1.29</a>,
+      sane (in full book)
+              ,
+      <a class="ulink" href="http://www.argyllcms.com/">ArgllCMS</a>, and
+      <a class="ulink" href="http://bash-completion.alioth.debian.org/">Bash Completion</a>,
+    </p><p class="usernotes">User Notes:
+      <a class="ulink" href="http://wiki.linuxfromscratch.org/blfs/wiki/colord">http://wiki.linuxfromscratch.org/blfs/wiki/colord</a>
+    </p></div><div class="installation" lang="en" xml:lang="en"><h2 class="sect2">Installation of Colord</h2><p>
+      There should be a dedicated user and group to take control
+      of the <span class="command"><strong>colord</strong></span> daemon after it is started.
+      Issue the following commands as the
+      <code class="systemitem">root</code> user:
+    </p><pre class="root"><kbd class="command">groupadd -g 71 colord &amp;&amp;
+useradd -c "Color Daemon Owner" -d /var/lib/colord -u 71 \
+        -g colord -s /bin/false colord</kbd></pre><p>
+      Install <span class="application">Colord</span> by running the following
+      commands:
+    </p><pre class="userinput"><kbd class="command">./configure --prefix=/usr                \
+            --sysconfdir=/etc            \
+            --localstatedir=/var         \
+            --with-daemon-user=colord    \
+            --enable-vala                \
+            --enable-systemd-login=no    \
+            --disable-argyllcms-sensor   \
+            --disable-bash-completion    \
+            --disable-static             \
+            --with-systemdsystemunitdir=no &amp;&amp;
+make</kbd></pre><p>
+      Now, as the <code class="systemitem">root</code> user:
+    </p><pre class="root"><kbd class="command">make install</kbd></pre><p>
+      To test the results, issue: <span class="command"><strong>make -k check</strong></span>. For unknown
+      reasons, some tests may fail. Note that the system-wide
+      <span class="application">D-Bus</span> daemon must be running or the tests
+      will fail.
+    </p></div><div class="commands" lang="en" xml:lang="en"><h2 class="sect2">Command Explanations</h2><p>
+      <em class="parameter"><code>--with-daemon-user=colord</code></em>: This
+      switch is used so the <span class="command"><strong>colord</strong></span> daemon
+      will run as an unprivileged user instead of
+      <code class="systemitem">root</code> user.
+    </p><p>
+      <em class="parameter"><code>--enable-vala</code></em>: This switch enables
+      building of the Vala bindings. Remove if you don't
+      have <a class="xref" href="vala.html" title="Vala-0.34.4">Vala-0.34.4</a> installed.
+    </p><p>
+      <em class="parameter"><code>--enable-systemd-login=no</code></em>: This parameter fixes
+      building without <span class="application">systemd</span>, which is not part
+      of LFS/BLFS. If you use <span class="application">systemd</span>,
+      replace "no" by "yes".
+    </p><p>
+      <em class="parameter"><code>--disable-argyllcms-sensor</code></em>: Disables <a class="ulink" href="http://www.argyllcms.com/">ArgllCMS</a> sensor driver.
+    </p><p>
+      <em class="parameter"><code>--disable-bash-completion</code></em>: This switch
+      disables <span class="application">Bash Completion</span>
+      support for <span class="application">Colord</span> apps.
+    </p><p>
+      <em class="parameter"><code>--disable-static</code></em>: This switch prevents
+      installation of static versions of the libraries.
+    </p><p>
+      <em class="parameter"><code>--with-systemdsystemunitdir=no</code></em>: Disables
+      attempting to build with systemd libraries.
+    </p><p>
+      <code class="option">--enable-gtk-doc</code>: Use this switch if
+      <span class="application">GTK-Doc</span> is installed and you wish to build
+      and install the API documentation.
+    </p><p>
+      <code class="option">--disable-gusb</code>: Use this switch if you don't have
+      <span class="application">libgusb</span> installed.
+    </p><p>
+      <code class="option">--disable-udev</code>: Use this switch if you don't have GUdev
+      installed.
+    </p><p>
+      <code class="option">--disable-polkit</code>: Use this switch if you don't have
+      <span class="application">Polkit</span> installed.
+    </p></div><div class="content" lang="en" xml:lang="en"><h2 class="sect2">Contents</h2><div class="segmentedlist"><div class="seglistitem"><div class="seg"><strong class="segtitle">Installed Programs: </strong><span class="segbody">
+          cd-create-profile, cd-fix-profile, cd-iccdump, cd-it8, and colormgr
+        </span></div><div class="seg"><strong class="segtitle">Installed Libraries: </strong><span class="segbody">
+          libcolord.so, libcolordprivate.so, and libcolorhug.so
+        </span></div><div class="seg"><strong class="segtitle">Installed Directories: </strong><span class="segbody">
+          /usr/include/colord-1,
+          /usr/lib/colord-{plugins,sensors},
+          /usr/share/color{,d},
+          /usr/share/gtk-doc/html/colord, and
+          /var/lib/colord
+        </span></div></div></div><div class="variablelist"><h3>Short Descriptions</h3><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><a id="cd-create-profile"></a><span class="term"><span class="command"><strong>cd-create-profile</strong></span></span></p></td><td><p>
+            is a Color Manager Profile Creation Tool.
+          </p></td></tr><tr><td><p><a id="cd-fix-profile"></a><span class="term"><span class="command"><strong>cd-fix-profile</strong></span></span></p></td><td><p>
+            is a tool used to fix metadata in ICC profiles.
+          </p></td></tr><tr><td><p><a id="cd-iccdump"></a><span class="term"><span class="command"><strong>cd-iccdump</strong></span></span></p></td><td><p>
+            dumps the contents of an ICC profile as human readable text.
+          </p></td></tr><tr><td><p><a id="cd-it8"></a><span class="term"><span class="command"><strong>cd-it8</strong></span></span></p></td><td><p>
+            is a Color Manager Testing Tool.
+          </p></td></tr><tr><td><p><a id="colormgr"></a><span class="term"><span class="command"><strong>colormgr</strong></span></span></p></td><td><p>
+            is a text-mode program that allows you to interact with colord
+            on the command line.
+          </p></td></tr><tr><td><p><a id="libcolord"></a><span class="term"><code class="filename">libcolord.so</code></span></p></td><td><p>
+            contains the <span class="application">Colord</span> API functions.
+          </p></td></tr></tbody></table></div></div><p class="updated">Last updated 
+      on
+       2016-12-17 06:42:45 +0000</p></div><div class="navfooter"><ul><li class="prev"><a accesskey="p" href="polkit.html" title="Polkit-0.113">Prev</a><p>Polkit-0.113</p></li><li class="next"><a accesskey="n" href="cups.html" title="Cups-2.2.1">Next</a><p>Cups-2.2.1</p></li><li class="up"><a accesskey="u" href="ch01.html" title="Chapter 1. Installing packages in dependency build order">Up</a></li><li class="home"><a accesskey="h" href="index.html" title="Beyond Linux® From Scratch - Version 2017-01-20">Home</a></li></ul></div></body></html>
